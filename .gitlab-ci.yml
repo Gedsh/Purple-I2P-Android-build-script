@@ -1,0 +1,91 @@
+
+.artifacts-template: &artifacts-template
+  artifacts:
+    name: "${CI_PROJECT_PATH}_${CI_JOB_STAGE}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}"
+    paths:
+      - i2pd-android-binary/src/main/libs
+      - external/libs
+    expire_in: 1 week
+    when: always
+
+.apt-template: &apt-template |
+      export LC_ALL=C.UTF-8
+      echo Etc/UTC > /etc/timezone
+      echo 'quiet "1";' \
+           'APT::Install-Recommends "0";' \
+           'APT::Install-Suggests "0";' \
+           'APT::Acquire::Retries "20";' \
+           'APT::Get::Assume-Yes "true";' \
+           'Dpkg::Use-Pty "0";' \
+        >> /etc/apt/apt.conf.d/99gitlab
+      apt-get update
+      apt-get dist-upgrade
+
+
+.android-template: &android-template
+  image: registry.gitlab.com/fdroid/ci-images-client:latest
+  <<: *artifacts-template
+  variables:
+    DEBIAN_FRONTEND: noninteractive
+  before_script:
+    - *apt-template
+
+    - apt-get -qy install
+        autoconf
+        autogen
+        automake
+        autopoint
+        autotools-dev
+        gettext-base
+        git
+        libtool
+        make
+        patch
+        pkg-config
+        ca-certificates
+        curl
+        gzip
+        libtinfo5
+        pkg-config
+        tar
+        unzip
+        wget
+
+    - rm -rf $PWD/android-ndk*
+    - ndk=android-ndk-`echo $CI_JOB_NAME | awk '{print $2}'`
+    - ndk_zip=${ndk}-linux-x86_64.zip
+    - curl --silent http://dl.google.com/android/repository/${ndk_zip} > $ndk_zip
+    - echo "57435158f109162f41f2f43d5563d2164e4d5d0364783a9a6fab3ef12cb06ce0  $ndk_zip" > ${ndk_zip}.sha256
+    - sha256sum -c ${ndk_zip}.sha256
+    - unzip -q $ndk_zip
+    - export ANDROID_NDK_HOME=`pwd`/$ndk
+
+    - mkdir -p external/libs
+    - export EXTERNAL_ROOT=`pwd`/external
+    - cd external/libs
+
+    - git clone --single-branch --branch OpenSSL_1_1_1g https://github.com/openssl/openssl.git
+
+    - git clone https://github.com/PurpleI2P/Boost-for-Android-Prebuilt.git -b boost-1_72_0
+
+    - git clone https://github.com/PurpleI2P/MiniUPnP-for-Android-Prebuilt.git
+
+    - git clone https://github.com/PurpleI2P/android-ifaddrs.git
+
+    - cd ..
+
+    - git clone https://github.com/PurpleI2P/i2pd.git
+
+
+android r20 22 default armeabi-v7a:
+  <<: *android-template
+  script:
+    - APP_ABI=armeabi make clean
+    - APP_ABI=armeabi make
+
+
+android r20 22 default arm64-v8a:
+  <<: *android-template
+  script:
+    - APP_ABI=arm64 NDK_PLATFORM_LEVEL=21 NDK_BIT=64 make clean
+    - APP_ABI=arm64 NDK_PLATFORM_LEVEL=21 NDK_BIT=64 make
