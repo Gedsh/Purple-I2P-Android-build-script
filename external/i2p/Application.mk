@@ -1,9 +1,9 @@
 #APP_ABI := all
 #APP_ABI += x86
 #APP_ABI += x86_64
-APP_ABI += $I2P_ARCH_ABI
+APP_ABI += $(TARGET_I2P_ABI)
 #can be android-3 but will fail for x86 since arch-x86 is not present at ndkroot/platforms/android-3/ . libz is taken from there.
-APP_PLATFORM := android-14
+APP_PLATFORM := android-$(TARGET_I2P_PLATFORM)
 
 NDK_TOOLCHAIN_VERSION := clang
 APP_STL := c++_static
@@ -25,14 +25,14 @@ endif
 # git clone https://github.com/PurpleI2P/MiniUPnP-for-Android-Prebuilt.git
 # git clone https://github.com/PurpleI2P/android-ifaddrs.git
 # change to your own
-I2PD_LIBS_PATH = $EXTERNAL_ROOT/libs
+I2PD_LIBS_PATH = $(EXTERNAL_ROOT)/libs
 BOOST_PATH = $(I2PD_LIBS_PATH)/Boost-for-Android-Prebuilt
 OPENSSL_PATH = $(I2PD_LIBS_PATH)/OpenSSL-for-Android-Prebuilt
 MINIUPNP_PATH = $(I2PD_LIBS_PATH)/MiniUPnP-for-Android-Prebuilt
 IFADDRS_PATH = $(I2PD_LIBS_PATH)/android-ifaddrs
 
 # don't change me
-I2PD_SRC_PATH = $EXTERNAL_ROOT/i2pd
+I2PD_SRC_PATH = $(EXTERNAL_ROOT)/i2pd
 
 LIB_SRC_PATH = $(I2PD_SRC_PATH)/libi2pd
 LIB_CLIENT_SRC_PATH = $(I2PD_SRC_PATH)/libi2pd_client
