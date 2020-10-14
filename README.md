@@ -1,4 +1,4 @@
-## Tor for Android
+## Purple I2P for Android
 
 This project was created to build Purple I2P for Android from source using Gitlab CI/CD.
 
