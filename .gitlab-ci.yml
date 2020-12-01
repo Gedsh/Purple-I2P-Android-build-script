@@ -63,8 +63,6 @@
     - unzip -q $ndk_zip
     - export ANDROID_NDK_HOME=`pwd`/$ndk
 
-    # - export NDK_ROOT=`pwd`/$ndk
-
     - export TARGET_I2P_ABI=`echo $CI_JOB_NAME | awk '{print $5}'`
     - export TARGET_I2P_PLATFORM=`echo $CI_JOB_NAME | awk '{print $3}'`
 
