@@ -70,11 +70,11 @@
     - export EXTERNAL_ROOT=`pwd`/external
     - cd external/libs
 
-    - git clone --single-branch --branch OpenSSL_1_1_1g https://github.com/openssl/openssl.git
+    - git clone --single-branch --branch OpenSSL_1_1_1h https://github.com/openssl/openssl.git
 
     - git clone https://github.com/moritz-wundke/Boost-for-Android.git
 
-    - git clone https://github.com/miniupnp/miniupnp.git
+    - git clone --single-branch --branch miniupnpc_2_1 https://github.com/miniupnp/miniupnp.git
 
     - git clone https://github.com/PurpleI2P/android-ifaddrs.git
 
