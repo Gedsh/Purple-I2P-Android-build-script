@@ -80,7 +80,7 @@
 
     - cd ..
 
-    - git clone https://github.com/PurpleI2P/i2pd.git
+    - git clone  --single-branch --branch 2.35.0 https://github.com/PurpleI2P/i2pd.git
 
 
 android r20b 16 default armeabi-v7a:
