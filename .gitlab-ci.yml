@@ -74,13 +74,13 @@
 
     - git clone https://github.com/moritz-wundke/Boost-for-Android.git
 
-    - git clone --single-branch --branch miniupnpc_2_1 https://github.com/miniupnp/miniupnp.git
+    - git clone --single-branch --branch miniupnpc_2_2_0 https://github.com/miniupnp/miniupnp.git
 
     - git clone https://github.com/PurpleI2P/android-ifaddrs.git
 
     - cd ..
 
-    - git clone  --single-branch --branch 2.35.0 https://github.com/PurpleI2P/i2pd.git
+    - git clone --single-branch --branch openssl https://github.com/PurpleI2P/i2pd.git && cd i2pd && git checkout 01df1647bcfe7a9b92a90b457fdf2683e338a4f9 && cd ..
 
 
 android r20b 16 default armeabi-v7a:
