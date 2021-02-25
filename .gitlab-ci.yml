@@ -80,7 +80,7 @@
 
     - cd ..
 
-    - git clone --single-branch --branch openssl https://github.com/PurpleI2P/i2pd.git && cd i2pd && git checkout 01df1647bcfe7a9b92a90b457fdf2683e338a4f9 && cd ..
+    - git clone --single-branch --branch openssl https://github.com/PurpleI2P/i2pd.git && cd i2pd && git checkout b1fcd4d27bebd1bc5b5aee15778900a1764911a4 && cd ..
 
 
 android r20b 16 default armeabi-v7a:

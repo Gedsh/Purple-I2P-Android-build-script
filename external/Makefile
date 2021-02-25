@@ -225,20 +225,20 @@ miniupnpc-clean:
 # i2pd
 
 i2pd-configure:
-	-cd i2pd/android_binary_only/jni && \
+	-cd i2pd/contrib/android_binary_only/jni && \
 		rm Application.mk
-	cp i2p/Application.mk i2pd/android_binary_only/jni/Application.mk
-	-cd i2pd/android_binary_only/jni && \
+	cp i2p/Application.mk i2pd/contrib/android_binary_only/jni/Application.mk
+	-cd i2pd/contrib/android_binary_only/jni && \
 		rm Android.mk
-	cp i2p/Android.mk i2pd/android_binary_only/jni/Android.mk
+	cp i2p/Android.mk i2pd/contrib/android_binary_only/jni/Android.mk
 
 i2pd-build-stamp: i2pd-configure
-	$(ANDROID_NDK_HOME)/ndk-build -C i2pd/android_binary_only -j`nproc`
+	$(ANDROID_NDK_HOME)/ndk-build -C i2pd/contrib/android_binary_only -j`nproc`
 	touch i2pd-build-stamp
 
 i2pd: boost miniupnpc openssl i2pd-build-stamp
 	test -d bin || mkdir bin
-	cp i2pd/android_binary_only/libs/$(TARGET_I2P_ABI)/i2pd bin
+	cp i2pd/contrib/android_binary_only/libs/$(TARGET_I2P_ABI)/i2pd bin
 
 i2pd-clean:
 	-rm -f bin/i2pd
