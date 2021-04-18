@@ -98,7 +98,7 @@ else
 endif
 
 
-CFLAGS = -DANDROID $(TARGET_CFLAGS) $(PIEFLAGS)
+CFLAGS = -DANDROID -O3 $(TARGET_CFLAGS) $(PIEFLAGS)
 LDFLAGS = -llog $(TARGET_LDFLAGS) $(PIEFLAGS)
 
 # change 'release' to 'debug' for unoptimized debug builds
@@ -177,7 +177,7 @@ openssl-clean:
 
 boost: boost-build-stamp
 	-cd libs/Boost-for-Android && \
-	CXXFLAGS="-std=c++14" NCPU=`nproc` ./build-android.sh --boost=1.74.0 \
+	CXXFLAGS="-std=c++14 -O3" NCPU=`nproc` ./build-android.sh --boost=1.74.0 \
 		--arch=$(APP_ABI) --target-version=$(NDK_PLATFORM_LEVEL) "$(ANDROID_NDK_HOME)" > /dev/null
 	test -d libs/Boost-for-Android-Prebuilt/boost-1_74_0/include/boost || \
 		mkdir -p libs/Boost-for-Android-Prebuilt/boost-1_74_0/include/boost
