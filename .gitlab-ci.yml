@@ -23,7 +23,7 @@
 
 
 .android-template: &android-template
-  image: ubuntu:latest
+  image: debian:latest
   <<: *artifacts-template
   variables:
     DEBIAN_FRONTEND: noninteractive

@@ -176,9 +176,10 @@ openssl-clean:
 # boost
 
 boost: boost-build-stamp
+	cd libs/Boost-for-Android && git apply ../../boost/bintray.patch
 	-cd libs/Boost-for-Android && \
 	CXXFLAGS="-std=c++14 -O3" NCPU=`nproc` ./build-android.sh --boost=1.74.0 \
-		--arch=$(APP_ABI) --target-version=$(NDK_PLATFORM_LEVEL) "$(ANDROID_NDK_HOME)" > /dev/null
+		--arch=$(APP_ABI) --target-version=$(NDK_PLATFORM_LEVEL) "$(ANDROID_NDK_HOME)"
 	test -d libs/Boost-for-Android-Prebuilt/boost-1_74_0/include/boost || \
 		mkdir -p libs/Boost-for-Android-Prebuilt/boost-1_74_0/include/boost
 	test -d libs/Boost-for-Android-Prebuilt/boost-1_74_0/$(APP_ABI)/lib || \
