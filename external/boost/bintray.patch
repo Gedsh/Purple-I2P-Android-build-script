@@ -1,5 +1,5 @@
 diff --git a/build-android.sh b/build-android.sh
-index 308a4eb..1675aa3 100755
+index 308a4eb..fed08b9 100755
 --- a/build-android.sh
 +++ b/build-android.sh
 @@ -205,7 +205,7 @@ echo "Building boost version: $BOOST_VER1.$BOOST_VER2.$BOOST_VER3"
@@ -7,7 +7,7 @@ index 308a4eb..1675aa3 100755
  # -----------------------
  
 -BOOST_DOWNLOAD_LINK="http://dl.bintray.com/boostorg/release/$BOOST_VER1.$BOOST_VER2.$BOOST_VER3/source/boost_${BOOST_VER1}_${BOOST_VER2}_${BOOST_VER3}.tar.bz2"
-+BOOST_DOWNLOAD_LINK="https://sourceforge.net/projects/boost/files/boost/$BOOST_VER1.$BOOST_VER2.$BOOST_VER3/boost_${BOOST_VER1}_${BOOST_VER2}_${BOOST_VER3}.tar.bz2/download"
++BOOST_DOWNLOAD_LINK="https://boostorg.jfrog.io/artifactory/main/release/$BOOST_VER1.$BOOST_VER2.$BOOST_VER3/source/boost_${BOOST_VER1}_${BOOST_VER2}_${BOOST_VER3}.tar.bz2"
  BOOST_TAR="boost_${BOOST_VER1}_${BOOST_VER2}_${BOOST_VER3}.tar.bz2"
  BOOST_DIR="boost_${BOOST_VER1}_${BOOST_VER2}_${BOOST_VER3}"
  BUILD_DIR="./build/"
