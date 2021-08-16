@@ -52,23 +52,18 @@ NDK_SYSROOT=$(ANDROID_NDK_HOME)/platforms/android-$(NDK_PLATFORM_LEVEL)/arch-$(N
 NDK_UNAME := $(shell uname -s | tr '[A-Z]' '[a-z]')
 ifneq ($(filter mips%, $(NDK_ABI)),)
  HOST := $(NDK_ABI)el-linux-android
- ALTHOST := $(HOST)
 endif
 ifneq ($(filter arm64, $(NDK_ABI)),)
  HOST := aarch64-linux-android
- ALTHOST := $(HOST)
 endif
 ifneq ($(filter arm, $(NDK_ABI)),)
  HOST := armv7a-linux-androideabi
- ALTHOST := arm-linux-androideabi
 endif
 ifneq ($(filter x86, $(NDK_ABI)),)
  HOST := i686-linux-android
- ALTHOST := $(HOST)
 endif
 ifneq ($(filter x86_64, $(NDK_ABI)),)
  HOST := x86_64-linux-android
- ALTHOST := $(HOST)
 endif
 
 NDK_TOOLCHAIN := $(HOST)-$(NDK_TOOLCHAIN_VERSION)
@@ -87,14 +82,14 @@ TARGET_ARCH_ABI = $(APP_ABI)
 CC := $(NDK_TOOLCHAIN_BASE)/bin/$(HOST)$(NDK_PLATFORM_LEVEL)-clang
 CXX := $(NDK_TOOLCHAIN_BASE)/bin/$(HOST)$(NDK_PLATFORM_LEVEL)-clang++ --sysroot=$(NDK_SYSROOT)
 CPP := $(NDK_TOOLCHAIN_BASE)/bin/$(HOST)$(NDK_PLATFORM_LEVEL)-clang++ --sysroot=$(NDK_SYSROOT)
-LD := $(NDK_TOOLCHAIN_BASE)/bin/$(ALTHOST)-ld
-AR := $(NDK_TOOLCHAIN_BASE)/bin/$(ALTHOST)-ar
-RANLIB := $(NDK_TOOLCHAIN_BASE)/bin/$(ALTHOST)-ranlib
+LD := $(NDK_TOOLCHAIN_BASE)/bin/ld
+AR := $(NDK_TOOLCHAIN_BASE)/bin/llvm-ar
+RANLIB := $(NDK_TOOLCHAIN_BASE)/bin/llvm-ranlib
 
 ifeq ($(DEBUG), 1)
 	STRIP := $(NOOP)
 else
-	STRIP := $(NDK_TOOLCHAIN_BASE)/bin/$(ALTHOST)-strip --strip-unneeded -R .note -R .comment --strip-debug
+	STRIP := $(NDK_TOOLCHAIN_BASE)/bin/llvm-strip --strip-unneeded -R .note -R .comment --strip-debug
 endif
 
 
@@ -176,7 +171,6 @@ openssl-clean:
 # boost
 
 boost: boost-build-stamp
-	cd libs/Boost-for-Android && git apply ../../boost/bintray.patch
 	-cd libs/Boost-for-Android && \
 	CXXFLAGS="-std=c++14" NCPU=`nproc` ./build-android.sh --boost=1.74.0 \
 		--arch=$(APP_ABI) --target-version=$(NDK_PLATFORM_LEVEL) "$(ANDROID_NDK_HOME)" > /dev/null
@@ -234,7 +228,7 @@ i2pd-configure:
 	cp i2p/Android.mk i2pd/contrib/android_binary_only/jni/Android.mk
 
 i2pd-build-stamp: i2pd-configure
-	$(ANDROID_NDK_HOME)/ndk-build -C i2pd/contrib/android_binary_only -j`nproc`
+	$(ANDROID_NDK_HOME)/ndk-build -C i2pd/contrib/android_binary_only -j`nproc` > /dev/null
 	touch i2pd-build-stamp
 
 i2pd: boost miniupnpc openssl i2pd-build-stamp
