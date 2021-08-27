@@ -83,7 +83,7 @@
 
     - cd ..
 
-    - git clone --single-branch --branch openssl https://github.com/PurpleI2P/i2pd.git
+    - git clone --single-branch --branch 2.39.0 https://github.com/PurpleI2P/i2pd.git
 
 
 android r23 16 default armeabi-v7a:
