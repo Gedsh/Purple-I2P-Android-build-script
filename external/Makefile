@@ -152,18 +152,18 @@ libs/openssl-build-stamp: libs/lib/libcrypto.a libs/lib/libssl.a
 
 openssl: libs/openssl-build-stamp
 
-	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1k-clang/$(TARGET_I2P_ABI)/lib || \
-		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1k-clang/$(TARGET_I2P_ABI)/lib
-	cp libs/openssl/libcrypto.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1k-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
-	cp libs/openssl/libssl.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1k-clang/$(TARGET_I2P_ABI)/lib/libssl.a
-	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1k-clang/include/openssl || \
-		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1k-clang/include/openssl
-	cp libs/openssl/include/openssl/* libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1k-clang/include/openssl
+	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1l-clang/$(TARGET_I2P_ABI)/lib || \
+		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1l-clang/$(TARGET_I2P_ABI)/lib
+	cp libs/openssl/libcrypto.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1l-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
+	cp libs/openssl/libssl.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1l-clang/$(TARGET_I2P_ABI)/lib/libssl.a
+	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1l-clang/include/openssl || \
+		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1l-clang/include/openssl
+	cp libs/openssl/include/openssl/* libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1l-clang/include/openssl
 
 openssl-clean:
 	-rm libs/openssl-build-stamp
-	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1k-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
-	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1k-clang/$(TARGET_I2P_ABI)/lib/libssl.a
+	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1l-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
+	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1l-clang/$(TARGET_I2P_ABI)/lib/libssl.a
 	-cd libs/openssl && \
 		git clean -fdx
 
@@ -228,7 +228,7 @@ i2pd-configure:
 	cp i2p/Android.mk i2pd/contrib/android_binary_only/jni/Android.mk
 
 i2pd-build-stamp: i2pd-configure
-	$(ANDROID_NDK_HOME)/ndk-build -C i2pd/contrib/android_binary_only -j`nproc` > /dev/null
+	$(ANDROID_NDK_HOME)/ndk-build -C i2pd/contrib/android_binary_only -j`nproc`
 	touch i2pd-build-stamp
 
 i2pd: boost miniupnpc openssl i2pd-build-stamp

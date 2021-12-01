@@ -56,10 +56,10 @@
 
     - rm -rf $PWD/android-ndk*
     - ndk=android-ndk-`echo $CI_JOB_NAME | awk '{print $2}'`
-    - ndk_zip=${ndk}-linux.zip
+    - ndk_zip=${ndk}-linux-x86_64.zip
     - curl --silent http://dl.google.com/android/repository/${ndk_zip} > $ndk_zip
-    - echo "9bad35f442caeda747780ba1dd92f2d98609d9cd  $ndk_zip" > ${ndk_zip}.sha1
-    - sha1sum -c ${ndk_zip}.sha1
+    - echo "8381C440FE61FCBB01E209211AC01B519CD6ADF51AB1C2281D5DAAD6CA4C8C8C  $ndk_zip" > ${ndk_zip}.sha256
+    - sha256sum -c ${ndk_zip}.sha256
     - unzip -q $ndk_zip
     - export ANDROID_NDK_HOME=`pwd`/$ndk
 
@@ -70,7 +70,7 @@
     - export EXTERNAL_ROOT=`pwd`/external
     - cd external/libs
 
-    - git clone --single-branch --branch OpenSSL_1_1_1k https://github.com/openssl/openssl.git
+    - git clone --single-branch --branch OpenSSL_1_1_1l https://github.com/openssl/openssl.git
 
     - git clone https://github.com/moritz-wundke/Boost-for-Android.git
 
@@ -83,17 +83,17 @@
 
     - cd ..
 
-    - git clone --single-branch --branch 2.39.0 https://github.com/PurpleI2P/i2pd.git
+    - git clone --single-branch --branch 2.40.0 https://github.com/PurpleI2P/i2pd.git
 
 
-android r23 16 default armeabi-v7a:
+android r20b 16 default armeabi-v7a:
   <<: *android-template
   script:
     - APP_ABI=armeabi-v7a make clean
     - APP_ABI=armeabi-v7a make
 
 
-android r23 21 default arm64-v8a:
+android r20b 21 default arm64-v8a:
   <<: *android-template
   script:
     - APP_ABI=arm64-v8a NDK_PLATFORM_LEVEL=21 NDK_BIT=64 make clean
