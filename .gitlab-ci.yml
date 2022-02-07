@@ -70,7 +70,7 @@
     - export EXTERNAL_ROOT=`pwd`/external
     - cd external/libs
 
-    - git clone --single-branch --branch OpenSSL_1_1_1l https://github.com/openssl/openssl.git
+    - git clone --single-branch --branch OpenSSL_1_1_1m https://github.com/openssl/openssl.git
 
     - git clone https://github.com/moritz-wundke/Boost-for-Android.git
 
@@ -83,7 +83,10 @@
 
     - cd ..
 
-    - git clone --single-branch --branch 2.40.0 https://github.com/PurpleI2P/i2pd.git
+    - git clone https://github.com/PurpleI2P/i2pd.git
+    - cd i2pd/
+    - git checkout c9a1066
+    - cd ..
 
 
 android r20b 16 default armeabi-v7a:

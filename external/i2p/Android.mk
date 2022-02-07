@@ -12,7 +12,8 @@ LOCAL_STATIC_LIBRARIES := \
 	miniupnpc
 LOCAL_LDLIBS := -lz
 
-LOCAL_SRC_FILES := $(IFADDRS_PATH)/ifaddrs.c \
+LOCAL_SRC_FILES := $(IFADDRS_PATH)/ifaddrs.cpp \
+	$(IFADDRS_PATH)/bionic_netlink.cpp \
 	$(wildcard $(LIB_SRC_PATH)/*.cpp)\
 	$(wildcard $(LIB_CLIENT_SRC_PATH)/*.cpp)\
 	$(wildcard $(TRANSLATIONS_PATH)/*.cpp)\
@@ -55,15 +56,15 @@ include $(PREBUILT_STATIC_LIBRARY)
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE := crypto
-LOCAL_SRC_FILES := $(OPENSSL_PATH)/openssl-1.1.1l-clang/$(TARGET_ARCH_ABI)/lib/libcrypto.a
-LOCAL_EXPORT_C_INCLUDES := $(OPENSSL_PATH)/openssl-1.1.1l-clang/include
+LOCAL_SRC_FILES := $(OPENSSL_PATH)/openssl-1.1.1m-clang/$(TARGET_ARCH_ABI)/lib/libcrypto.a
+LOCAL_EXPORT_C_INCLUDES := $(OPENSSL_PATH)/openssl-1.1.1m-clang/include
 include $(PREBUILT_STATIC_LIBRARY)
 
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE := ssl
-LOCAL_SRC_FILES := $(OPENSSL_PATH)/openssl-1.1.1l-clang/$(TARGET_ARCH_ABI)/lib/libssl.a
-LOCAL_EXPORT_C_INCLUDES := $(OPENSSL_PATH)/openssl-1.1.1l-clang/include
+LOCAL_SRC_FILES := $(OPENSSL_PATH)/openssl-1.1.1m-clang/$(TARGET_ARCH_ABI)/lib/libssl.a
+LOCAL_EXPORT_C_INCLUDES := $(OPENSSL_PATH)/openssl-1.1.1m-clang/include
 LOCAL_STATIC_LIBRARIES := crypto
 include $(PREBUILT_STATIC_LIBRARY)
 

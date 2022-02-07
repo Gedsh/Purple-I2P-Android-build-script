@@ -9,7 +9,7 @@ NDK_TOOLCHAIN_VERSION := clang
 APP_STL := c++_static
 
 # Enable c++17 extensions in source code
-APP_CPPFLAGS += -std=c++17 -fvisibility=default -fPIE
+APP_CPPFLAGS += -std=c++17 -fvisibility=default -fPIE -O3
 
 APP_CPPFLAGS += -DANDROID_BINARY -DANDROID -D__ANDROID__ -DUSE_UPNP
 APP_LDFLAGS += -rdynamic -fPIE -pie
