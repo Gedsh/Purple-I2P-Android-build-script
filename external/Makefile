@@ -152,18 +152,18 @@ libs/openssl-build-stamp: libs/lib/libcrypto.a libs/lib/libssl.a
 
 openssl: libs/openssl-build-stamp
 
-	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1m-clang/$(TARGET_I2P_ABI)/lib || \
-		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1m-clang/$(TARGET_I2P_ABI)/lib
-	cp libs/openssl/libcrypto.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1m-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
-	cp libs/openssl/libssl.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1m-clang/$(TARGET_I2P_ABI)/lib/libssl.a
-	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1m-clang/include/openssl || \
-		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1m-clang/include/openssl
-	cp libs/openssl/include/openssl/* libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1m-clang/include/openssl
+	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/$(TARGET_I2P_ABI)/lib || \
+		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/$(TARGET_I2P_ABI)/lib
+	cp libs/openssl/libcrypto.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
+	cp libs/openssl/libssl.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/$(TARGET_I2P_ABI)/lib/libssl.a
+	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/include/openssl || \
+		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/include/openssl
+	cp libs/openssl/include/openssl/* libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/include/openssl
 
 openssl-clean:
 	-rm libs/openssl-build-stamp
-	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1m-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
-	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1m-clang/$(TARGET_I2P_ABI)/lib/libssl.a
+	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
+	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/$(TARGET_I2P_ABI)/lib/libssl.a
 	-cd libs/openssl && \
 		git clean -fdx
 
@@ -219,21 +219,13 @@ miniupnpc-clean:
 #------------------------------------------------------------------------------#
 # i2pd
 
-i2pd-configure:
-	-cd i2pd/contrib/android_binary_only/jni && \
-		rm Application.mk
-	cp i2p/Application.mk i2pd/contrib/android_binary_only/jni/Application.mk
-	-cd i2pd/contrib/android_binary_only/jni && \
-		rm Android.mk
-	cp i2p/Android.mk i2pd/contrib/android_binary_only/jni/Android.mk
-
-i2pd-build-stamp: i2pd-configure
-	$(ANDROID_NDK_HOME)/ndk-build NDK_DEBUG=$(DEBUG) -C i2pd/contrib/android_binary_only -j`nproc`
+i2pd-build-stamp:
+	$(ANDROID_NDK_HOME)/ndk-build NDK_DEBUG=$(DEBUG) -C i2p -j`nproc`
 	touch i2pd-build-stamp
 
 i2pd: boost miniupnpc openssl i2pd-build-stamp
 	test -d bin || mkdir bin
-	cp i2pd/contrib/android_binary_only/libs/$(TARGET_I2P_ABI)/i2pd bin
+	cp i2p/libs/$(TARGET_I2P_ABI)/i2pd bin
 
 i2pd-clean:
 	-rm -f bin/i2pd
