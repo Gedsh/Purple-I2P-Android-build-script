@@ -85,7 +85,7 @@
 
     - git clone https://github.com/PurpleI2P/i2pd.git
     - cd i2pd/
-    - git checkout 2.42.0
+    - git checkout 2.42.1
     - cd ..
 
 
