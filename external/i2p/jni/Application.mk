@@ -17,8 +17,7 @@ APP_CPPFLAGS += -O3 -ftree-vectorize -fvectorize -fslp-vectorize
 APP_CPPFLAGS += -DANDROID_BINARY -DANDROID -D__ANDROID__ -DUSE_UPNP -Wno-deprecated-declarations -fstack-protector
 APP_LDFLAGS += -rdynamic -fPIE -pie
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-APP_CFLAGS += -march=armv7-a -mfpu=neon-vfpv4
-APP_CPPFLAGS += -DANDROID_ARM7A -march=armv7-a -mfpu=neon-vfpv4
+APP_CPPFLAGS += -DANDROID_ARM7A
 endif
 
 # Forcing debug optimization. Use `ndk-build NDK_DEBUG=1` instead.
