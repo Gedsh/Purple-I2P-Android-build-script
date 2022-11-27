@@ -152,18 +152,18 @@ libs/openssl-build-stamp: libs/lib/libcrypto.a libs/lib/libssl.a
 
 openssl: libs/openssl-build-stamp
 
-	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/$(TARGET_I2P_ABI)/lib || \
-		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/$(TARGET_I2P_ABI)/lib
-	cp libs/openssl/libcrypto.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
-	cp libs/openssl/libssl.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/$(TARGET_I2P_ABI)/lib/libssl.a
-	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/include/openssl || \
-		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/include/openssl
-	cp libs/openssl/include/openssl/* libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/include/openssl
+	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/$(TARGET_I2P_ABI)/lib || \
+		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/$(TARGET_I2P_ABI)/lib
+	cp libs/openssl/libcrypto.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
+	cp libs/openssl/libssl.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/$(TARGET_I2P_ABI)/lib/libssl.a
+	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/include/openssl || \
+		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/include/openssl
+	cp libs/openssl/include/openssl/* libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/include/openssl
 
 openssl-clean:
 	-rm libs/openssl-build-stamp
-	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
-	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1o-clang/$(TARGET_I2P_ABI)/lib/libssl.a
+	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
+	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/$(TARGET_I2P_ABI)/lib/libssl.a
 	-cd libs/openssl && \
 		git clean -fdx
 
