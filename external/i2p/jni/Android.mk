@@ -2,7 +2,7 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE := i2pd
 LOCAL_CPP_FEATURES := rtti exceptions
-LOCAL_C_INCLUDES += $(IFADDRS_PATH) $(LIB_SRC_PATH) $(LIB_CLIENT_SRC_PATH) $(DAEMON_SRC_PATH) $(TRANSLATIONS_PATH)
+LOCAL_C_INCLUDES += $(IFADDRS_PATH) $(LIB_SRC_PATH) $(LIB_CLIENT_SRC_PATH) $(DAEMON_SRC_PATH) $(LANG_SRC_PATH)
 LOCAL_STATIC_LIBRARIES := \
 	boost_system \
 	boost_date_time \
@@ -16,12 +16,13 @@ LOCAL_SRC_FILES := $(IFADDRS_PATH)/ifaddrs.cpp \
 	$(IFADDRS_PATH)/bionic_netlink.cpp \
 	$(wildcard $(LIB_SRC_PATH)/*.cpp)\
 	$(wildcard $(LIB_CLIENT_SRC_PATH)/*.cpp)\
-	$(wildcard $(TRANSLATIONS_PATH)/*.cpp)\
+	$(wildcard $(LANG_SRC_PATH)/*.cpp)\
 	$(DAEMON_SRC_PATH)/UnixDaemon.cpp \
 	$(DAEMON_SRC_PATH)/Daemon.cpp \
 	$(DAEMON_SRC_PATH)/UPnP.cpp \
 	$(DAEMON_SRC_PATH)/HTTPServer.cpp \
 	$(DAEMON_SRC_PATH)/I2PControl.cpp \
+	$(DAEMON_SRC_PATH)/I2PControlHandlers.cpp \
 	$(DAEMON_SRC_PATH)/i2pd.cpp
 include $(BUILD_EXECUTABLE)
 
