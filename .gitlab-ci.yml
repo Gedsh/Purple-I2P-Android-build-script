@@ -70,7 +70,7 @@
     - export EXTERNAL_ROOT=`pwd`/external
     - cd external/libs
 
-    - git clone --single-branch --branch OpenSSL_1_1_1t https://github.com/openssl/openssl.git
+    - git clone --single-branch --branch OpenSSL_1_1_1u https://github.com/openssl/openssl.git
 
     - git clone https://github.com/moritz-wundke/Boost-for-Android.git
 
@@ -85,7 +85,7 @@
 
     - git clone https://github.com/PurpleI2P/i2pd.git
     - cd i2pd/
-    - git checkout 2.47.0
+    - git checkout 2.48.0
     - cd ..
 
 
