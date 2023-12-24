@@ -143,7 +143,7 @@ libs/lib/libssl.a:
 	cp config.sub libs/openssl
 	cp config.guess libs/openssl
 	cd libs/openssl && \
-		./Configure linux-generic$(NDK_BIT) -D__ANDROID_API__=$(NDK_PLATFORM_LEVEL) -DL_ENDIAN $(OPENSSL_CONF_FLAG) && \
+		./Configure linux-generic$(NDK_BIT) -D__ANDROID_API__=$(NDK_PLATFORM_LEVEL) -DL_ENDIAN $(OPENSSL_CONF_FLAG) -DNO_RECVMMSG && \
 		make -j`nproc` CC="$(CC)" ANDROID_DEV=$(NDK_SYSROOT)/usr depend && \
 		make -j`nproc` CC="$(CC)" ANDROID_DEV=$(NDK_SYSROOT)/usr build_libs
 
