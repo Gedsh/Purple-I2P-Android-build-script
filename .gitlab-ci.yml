@@ -85,7 +85,7 @@
 
     - git clone https://github.com/PurpleI2P/i2pd.git
     - cd i2pd/
-    - git checkout openssl
+    - git checkout -f 02895d4cf5d0d5e047713a3af7d72f8a9b796e68 -b 02895d4cf5d0d5e047713a3af7d72f8a9b796e68
     - cd ..
 
 
