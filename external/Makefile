@@ -202,10 +202,10 @@ miniupnpc: miniupnpc-build-stamp
 	make  -j`nproc` -C libs/miniupnp/miniupnpc CC="$(CC)" CXX="$(CXX)" AR="$(AR)" RANLIB="$(RANLIB)" CFLAGS="$(CFLAGS)"  LDFLAGS="$(LDFLAGS)" PREFIX="$(EXTERNAL_ROOT)"
 	test -d libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/$(TARGET_I2P_ABI)/lib || \
 		mkdir -p libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/$(TARGET_I2P_ABI)/lib
-	cp libs/miniupnp/miniupnpc/libminiupnpc.a libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/$(TARGET_I2P_ABI)/lib/libminiupnpc.a
+	cp libs/miniupnp/miniupnpc/build/libminiupnpc.a libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/$(TARGET_I2P_ABI)/lib/libminiupnpc.a
 	test -d libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/include/miniupnpc || \
 		mkdir -p libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/include/miniupnpc
-	cp libs/miniupnp/miniupnpc/*.h libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/include/miniupnpc
+	cp libs/miniupnp/miniupnpc/include/*.h libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/include/miniupnpc
 	cp miniupnpc/Android.mk libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/Android.mk
 
 miniupnpc-build-stamp: libs/miniupnp/miniupnpc/Makefile
