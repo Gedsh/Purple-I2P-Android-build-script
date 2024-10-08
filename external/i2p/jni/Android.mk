@@ -5,8 +5,6 @@ LOCAL_CPP_FEATURES := rtti exceptions
 LOCAL_C_INCLUDES += $(IFADDRS_PATH) $(LIB_SRC_PATH) $(LIB_CLIENT_SRC_PATH) $(DAEMON_SRC_PATH) $(LANG_SRC_PATH)
 LOCAL_STATIC_LIBRARIES := \
 	boost_system \
-	boost_date_time \
-	boost_filesystem \
 	boost_program_options \
 	crypto ssl \
 	miniupnpc
@@ -29,29 +27,15 @@ include $(BUILD_EXECUTABLE)
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE := boost_system
-LOCAL_SRC_FILES := $(BOOST_PATH)/boost-1_74_0/$(TARGET_ARCH_ABI)/lib/libboost_system.a
-LOCAL_EXPORT_C_INCLUDES := $(BOOST_PATH)/boost-1_74_0/include
-include $(PREBUILT_STATIC_LIBRARY)
-
-LOCAL_PATH := $(call my-dir)
-include $(CLEAR_VARS)
-LOCAL_MODULE := boost_date_time
-LOCAL_SRC_FILES := $(BOOST_PATH)/boost-1_74_0/$(TARGET_ARCH_ABI)/lib/libboost_date_time.a
-LOCAL_EXPORT_C_INCLUDES := $(BOOST_PATH)/boost-1_74_0/include
-include $(PREBUILT_STATIC_LIBRARY)
-
-LOCAL_PATH := $(call my-dir)
-include $(CLEAR_VARS)
-LOCAL_MODULE := boost_filesystem
-LOCAL_SRC_FILES := $(BOOST_PATH)/boost-1_74_0/$(TARGET_ARCH_ABI)/lib/libboost_filesystem.a
-LOCAL_EXPORT_C_INCLUDES := $(BOOST_PATH)/boost-1_74_0/include
+LOCAL_SRC_FILES := $(BOOST_PATH)/boost-1_78_0/$(TARGET_ARCH_ABI)/lib/libboost_system.a
+LOCAL_EXPORT_C_INCLUDES := $(BOOST_PATH)/boost-1_78_0/include
 include $(PREBUILT_STATIC_LIBRARY)
 
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE := boost_program_options
-LOCAL_SRC_FILES := $(BOOST_PATH)/boost-1_74_0/$(TARGET_ARCH_ABI)/lib/libboost_program_options.a
-LOCAL_EXPORT_C_INCLUDES := $(BOOST_PATH)/boost-1_74_0/include
+LOCAL_SRC_FILES := $(BOOST_PATH)/boost-1_78_0/$(TARGET_ARCH_ABI)/lib/libboost_program_options.a
+LOCAL_EXPORT_C_INCLUDES := $(BOOST_PATH)/boost-1_78_0/include
 include $(PREBUILT_STATIC_LIBRARY)
 
 LOCAL_PATH := $(call my-dir)

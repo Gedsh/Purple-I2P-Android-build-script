@@ -41,11 +41,11 @@ PIEFLAGS ?= -fPIE
 
 ifneq ($(filter arm%, $(APP_ABI)),)
   NDK_ABI := arm
-  REMOVE_BOOST_LIBS_SUFFIX := -clang-mt-a32-1_74
+  REMOVE_BOOST_LIBS_SUFFIX := -clang-mt-a32-1_78
 endif
 ifneq ($(filter arm64%, $(APP_ABI)),)
  NDK_ABI := arm64
- REMOVE_BOOST_LIBS_SUFFIX := -clang-mt-a64-1_74
+ REMOVE_BOOST_LIBS_SUFFIX := -clang-mt-a64-1_78
 endif
 
 NDK_SYSROOT=$(ANDROID_NDK_HOME)/platforms/android-$(NDK_PLATFORM_LEVEL)/arch-$(NDK_ABI)
@@ -172,20 +172,20 @@ openssl-clean:
 
 boost: boost-build-stamp
 	-cd libs/Boost-for-Android && \
-	CXXFLAGS="-std=c++14" NCPU=`nproc` ./build-android.sh --boost=1.74.0 \
+	CXXFLAGS="-std=c++17" NCPU=`nproc` ./build-android.sh --boost=1.78.0 \
 		--arch=$(APP_ABI) --target-version=$(NDK_PLATFORM_LEVEL) "$(ANDROID_NDK_HOME)" > /dev/null
-	test -d libs/Boost-for-Android-Prebuilt/boost-1_74_0/include/boost || \
-		mkdir -p libs/Boost-for-Android-Prebuilt/boost-1_74_0/include/boost
-	test -d libs/Boost-for-Android-Prebuilt/boost-1_74_0/$(APP_ABI)/lib || \
-		mkdir -p libs/Boost-for-Android-Prebuilt/boost-1_74_0/$(APP_ABI)/lib
+	test -d libs/Boost-for-Android-Prebuilt/boost-1_78_0/include/boost || \
+		mkdir -p libs/Boost-for-Android-Prebuilt/boost-1_78_0/include/boost
+	test -d libs/Boost-for-Android-Prebuilt/boost-1_78_0/$(APP_ABI)/lib || \
+		mkdir -p libs/Boost-for-Android-Prebuilt/boost-1_78_0/$(APP_ABI)/lib
 
-	cp -r libs/Boost-for-Android/build/out/$(APP_ABI)/include/boost-1_74/boost/* libs/Boost-for-Android-Prebuilt/boost-1_74_0/include/boost
-	cp -r libs/Boost-for-Android/build/out/$(APP_ABI)/lib/*.a libs/Boost-for-Android-Prebuilt/boost-1_74_0/$(APP_ABI)/lib
+	cp -r libs/Boost-for-Android/build/out/$(APP_ABI)/include/boost-1_78/boost/* libs/Boost-for-Android-Prebuilt/boost-1_78_0/include/boost
+	cp -r libs/Boost-for-Android/build/out/$(APP_ABI)/lib/*.a libs/Boost-for-Android-Prebuilt/boost-1_78_0/$(APP_ABI)/lib
 
-	cd libs/Boost-for-Android-Prebuilt/boost-1_74_0/$(APP_ABI)/lib && \
+	cd libs/Boost-for-Android-Prebuilt/boost-1_78_0/$(APP_ABI)/lib && \
 		rename 's/$(REMOVE_BOOST_LIBS_SUFFIX)//' *.a
 
-	cp boost/Android.mk libs/Boost-for-Android-Prebuilt/boost-1_74_0
+	cp boost/Android.mk libs/Boost-for-Android-Prebuilt/boost-1_78_0
 
 boost-build-stamp: libs/Boost-for-Android/build-android.sh
 	touch libs/boost-build-stamp
