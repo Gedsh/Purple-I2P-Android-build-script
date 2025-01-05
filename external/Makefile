@@ -47,6 +47,10 @@ ifneq ($(filter arm64%, $(APP_ABI)),)
  NDK_ABI := arm64
  REMOVE_BOOST_LIBS_SUFFIX := -clang-mt-a64-1_78
 endif
+ifneq ($(filter x86_64%, $(APP_ABI)),)
+ NDK_ABI := x86_64
+ REMOVE_BOOST_LIBS_SUFFIX := -clang-mt-x64-1_78
+endif
 
 NDK_SYSROOT=$(ANDROID_NDK_HOME)/platforms/android-$(NDK_PLATFORM_LEVEL)/arch-$(NDK_ABI)
 NDK_UNAME := $(shell uname -s | tr '[A-Z]' '[a-z]')
@@ -104,7 +108,8 @@ ifeq ($(APP_ABI),armeabi)
 	CFLAGS += $(TARGET_thumb_release_CFLAGS)
 endif
 
-
+CFLAGS += -ffunction-sections -fdata-sections -fvisibility=hidden -O3 -funsafe-math-optimizations -ftree-vectorize -fvectorize -fslp-vectorize
+LDFLAGS += -Wl,--gc-sections
 
 .PHONY = clean showsetup \
 	assets assets-clean \
@@ -135,7 +140,7 @@ ifneq ($(filter mips%, $(NDK_ABI)),)
 endif
 libs/lib/libcrypto.a:
 	cd libs/openssl && \
-		./Configure linux-generic$(NDK_BIT) -D__ANDROID_API__=$(NDK_PLATFORM_LEVEL) -DL_ENDIAN $(OPENSSL_CONF_FLAG) && \
+		./Configure linux-generic$(NDK_BIT) -U__ANDROID_API__ -D__ANDROID_API__=$(NDK_PLATFORM_LEVEL) -DL_ENDIAN $(OPENSSL_CONF_FLAG) && \
 		make -j`nproc` CC="$(CC)" ANDROID_DEV=$(NDK_SYSROOT)/usr depend && \
 		make -j`nproc` CC="$(CC)" ANDROID_DEV=$(NDK_SYSROOT)/usr build_libs
 
@@ -143,7 +148,7 @@ libs/lib/libssl.a:
 	cp config.sub libs/openssl
 	cp config.guess libs/openssl
 	cd libs/openssl && \
-		./Configure linux-generic$(NDK_BIT) -D__ANDROID_API__=$(NDK_PLATFORM_LEVEL) -DL_ENDIAN $(OPENSSL_CONF_FLAG) -DNO_RECVMMSG && \
+		./Configure linux-generic$(NDK_BIT) -U__ANDROID_API__ -D__ANDROID_API__=$(NDK_PLATFORM_LEVEL) -DL_ENDIAN $(OPENSSL_CONF_FLAG) -DNO_RECVMMSG && \
 		make -j`nproc` CC="$(CC)" ANDROID_DEV=$(NDK_SYSROOT)/usr depend && \
 		make -j`nproc` CC="$(CC)" ANDROID_DEV=$(NDK_SYSROOT)/usr build_libs
 
