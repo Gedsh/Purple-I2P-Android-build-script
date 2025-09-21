@@ -9,6 +9,7 @@ LOCAL_STATIC_LIBRARIES := \
 	crypto ssl \
 	miniupnpc
 LOCAL_LDLIBS := -lz
+LOCAL_LDFLAGS += "-Wl,-z,max-page-size=16384"
 
 LOCAL_SRC_FILES := $(IFADDRS_PATH)/ifaddrs.cpp \
 	$(IFADDRS_PATH)/bionic_netlink.cpp \
