@@ -2,7 +2,6 @@
 #APP_ABI += x86
 #APP_ABI += x86_64
 APP_ABI += $(TARGET_I2P_ABI)
-#can be android-3 but will fail for x86 since arch-x86 is not present at ndkroot/platforms/android-3/ . libz is taken from there.
 APP_PLATFORM := android-$(TARGET_I2P_PLATFORM)
 
 NDK_TOOLCHAIN_VERSION := clang
@@ -10,8 +9,7 @@ APP_STL := c++_static
 
 APP_CFLAGS += -O3 -ftree-vectorize -fvectorize -fslp-vectorize
 
-# Enable c++17 extensions in source code
-APP_CPPFLAGS += -std=c++17 -fexceptions -frtti -fvisibility=default -fPIE
+APP_CPPFLAGS += -fexceptions -frtti -fvisibility=default -fPIE
 APP_CPPFLAGS += -O3 -ftree-vectorize -fvectorize -fslp-vectorize
 
 APP_CPPFLAGS += -DANDROID_BINARY -DANDROID -D__ANDROID__ -DUSE_UPNP -Wno-deprecated-declarations -fstack-protector

@@ -1,6 +1,6 @@
 ## Purple I2P for Android
 
-This project was created to build Purple I2P for Android from source using Gitlab CI/CD.
+This project was created to build Purple I2P for Android 5.0 (API 21) and later from source using Gitlab CI/CD.
 
 Precompiled binaries are used in **InviZible Pro** - Android application for Internet privacy and security.
 
@@ -12,15 +12,14 @@ Precompiled binaries are used in **InviZible Pro** - Android application for Int
 
 You can download the latest precompiled Purple I2P binaries from the links:
 
-## [Purple I2P for Android armeabi-v7a](https://gitlab.com/Gedsh/purple-i2p-android-build-script/-/jobs/artifacts/master/raw/i2pd-android-binary/src/main/libs/armeabi-v7a/libi2pd.so?job=android%20r23b%2016%20default%20armeabi-v7a)
+## [Purple I2P for Android armeabi-v7a](https://gitlab.com/Gedsh/purple-i2p-android-build-script/-/jobs/artifacts/master/raw/i2pd-android-binary/src/main/libs/armeabi-v7a/libi2pd.so?job=android%20r28c%2021%20default%20armeabi-v7a)
 
-## [Purple I2P for Android arm64-v8a](https://gitlab.com/Gedsh/purple-i2p-android-build-script/-/jobs/artifacts/master/raw/i2pd-android-binary/src/main/libs/arm64-v8a/libi2pd.so?job=android%20r23b%2021%20default%20arm64-v8a)
+## [Purple I2P for Android arm64-v8a](https://gitlab.com/Gedsh/purple-i2p-android-build-script/-/jobs/artifacts/master/raw/i2pd-android-binary/src/main/libs/arm64-v8a/libi2pd.so?job=android%20r28c%2021%20default%20arm64-v8a)
 
-## [Purple I2P for Android x86_64](https://gitlab.com/Gedsh/purple-i2p-android-build-script/-/jobs/artifacts/master/raw/i2pd-android-binary/src/main/libs/x86_64/libi2pd.so?job=android%20r23b%2021%20default%20x86_64)
+## [Purple I2P for Android x86_64](https://gitlab.com/Gedsh/purple-i2p-android-build-script/-/jobs/artifacts/master/raw/i2pd-android-binary/src/main/libs/x86_64/libi2pd.so?job=android%20r28c%2021%20default%20x86_64)
 
 ## License
 
 Copyright &copy; 2019-2026 by Garmatin Oleksandr invizible.soft@gmail.com
 
 This code is released under the [Apache License version 2.0](https://www.apache.org/licenses/LICENSE-2.0) 
-

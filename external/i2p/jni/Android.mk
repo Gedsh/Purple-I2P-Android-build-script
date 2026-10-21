@@ -2,9 +2,9 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE := i2pd
 LOCAL_CPP_FEATURES := rtti exceptions
+LOCAL_CPPFLAGS += -std=c++20
 LOCAL_C_INCLUDES += $(IFADDRS_PATH) $(LIB_SRC_PATH) $(LIB_CLIENT_SRC_PATH) $(DAEMON_SRC_PATH) $(LANG_SRC_PATH)
 LOCAL_STATIC_LIBRARIES := \
-	boost_system \
 	boost_program_options \
 	crypto ssl \
 	miniupnpc
@@ -27,36 +27,29 @@ include $(BUILD_EXECUTABLE)
 
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
-LOCAL_MODULE := boost_system
-LOCAL_SRC_FILES := $(BOOST_PATH)/boost-1_78_0/$(TARGET_ARCH_ABI)/lib/libboost_system.a
-LOCAL_EXPORT_C_INCLUDES := $(BOOST_PATH)/boost-1_78_0/include
-include $(PREBUILT_STATIC_LIBRARY)
-
-LOCAL_PATH := $(call my-dir)
-include $(CLEAR_VARS)
 LOCAL_MODULE := boost_program_options
-LOCAL_SRC_FILES := $(BOOST_PATH)/boost-1_78_0/$(TARGET_ARCH_ABI)/lib/libboost_program_options.a
-LOCAL_EXPORT_C_INCLUDES := $(BOOST_PATH)/boost-1_78_0/include
+LOCAL_SRC_FILES := $(BOOST_PATH)/boost/$(TARGET_ARCH_ABI)/lib/libboost_program_options.a
+LOCAL_EXPORT_C_INCLUDES := $(BOOST_PATH)/boost/include
 include $(PREBUILT_STATIC_LIBRARY)
 
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE := crypto
-LOCAL_SRC_FILES := $(OPENSSL_PATH)/openssl-1.1.1s-clang/$(TARGET_ARCH_ABI)/lib/libcrypto.a
-LOCAL_EXPORT_C_INCLUDES := $(OPENSSL_PATH)/openssl-1.1.1s-clang/include
+LOCAL_SRC_FILES := $(OPENSSL_PATH)/openssl/$(TARGET_ARCH_ABI)/lib/libcrypto.a
+LOCAL_EXPORT_C_INCLUDES := $(OPENSSL_PATH)/openssl/include
 include $(PREBUILT_STATIC_LIBRARY)
 
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE := ssl
-LOCAL_SRC_FILES := $(OPENSSL_PATH)/openssl-1.1.1s-clang/$(TARGET_ARCH_ABI)/lib/libssl.a
-LOCAL_EXPORT_C_INCLUDES := $(OPENSSL_PATH)/openssl-1.1.1s-clang/include
+LOCAL_SRC_FILES := $(OPENSSL_PATH)/openssl/$(TARGET_ARCH_ABI)/lib/libssl.a
+LOCAL_EXPORT_C_INCLUDES := $(OPENSSL_PATH)/openssl/include
 LOCAL_STATIC_LIBRARIES := crypto
 include $(PREBUILT_STATIC_LIBRARY)
 
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE := miniupnpc
-LOCAL_SRC_FILES := $(MINIUPNP_PATH)/miniupnpc-2.1/$(TARGET_ARCH_ABI)/lib/libminiupnpc.a
-LOCAL_EXPORT_C_INCLUDES := $(MINIUPNP_PATH)/miniupnpc-2.1/include
+LOCAL_SRC_FILES := $(MINIUPNP_PATH)/miniupnpc/$(TARGET_ARCH_ABI)/lib/libminiupnpc.a
+LOCAL_EXPORT_C_INCLUDES := $(MINIUPNP_PATH)/miniupnpc/include
 include $(PREBUILT_STATIC_LIBRARY)

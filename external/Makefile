@@ -29,30 +29,22 @@ endif
 # Android NDK setup
 ANDROID_NDK_HOME ?= /opt/android-ndk
 ANDROID_NDK ?= $(ANDROID_NDK_HOME)
-NDK_PLATFORM_LEVEL ?= 16
-NDK_TOOLCHAIN_VERSION=4.9
-NDK_BIT ?= 32
-APP_ABI ?= armeabi
+NDK_PLATFORM_LEVEL ?= 21
+APP_ABI ?= armeabi-v7a
 NDK_ABI ?= $(APP_ABI)
 
-# PIEFLAGS for SDK 16/Android L must be set to -fPIE -pie, but can override for earlier targets
-//PIEFLAGS ?= -fPIE -pie
 PIEFLAGS ?= -fPIE
 
 ifneq ($(filter arm%, $(APP_ABI)),)
   NDK_ABI := arm
-  REMOVE_BOOST_LIBS_SUFFIX := -clang-mt-a32-1_78
 endif
 ifneq ($(filter arm64%, $(APP_ABI)),)
  NDK_ABI := arm64
- REMOVE_BOOST_LIBS_SUFFIX := -clang-mt-a64-1_78
 endif
 ifneq ($(filter x86_64%, $(APP_ABI)),)
  NDK_ABI := x86_64
- REMOVE_BOOST_LIBS_SUFFIX := -clang-mt-x64-1_78
 endif
 
-NDK_SYSROOT=$(ANDROID_NDK_HOME)/platforms/android-$(NDK_PLATFORM_LEVEL)/arch-$(NDK_ABI)
 NDK_UNAME := $(shell uname -s | tr '[A-Z]' '[a-z]')
 ifneq ($(filter mips%, $(NDK_ABI)),)
  HOST := $(NDK_ABI)el-linux-android
@@ -70,23 +62,15 @@ ifneq ($(filter x86_64, $(NDK_ABI)),)
  HOST := x86_64-linux-android
 endif
 
-NDK_TOOLCHAIN := $(HOST)-$(NDK_TOOLCHAIN_VERSION)
-ifneq ($(filter x86%, $(NDK_ABI)),)
- NDK_TOOLCHAIN := $(NDK_ABI)-$(NDK_TOOLCHAIN_VERSION)
-endif
-
-//NDK_TOOLCHAIN_BASE=$(ANDROID_NDK_HOME)/toolchains/$(NDK_TOOLCHAIN)/prebuilt/$(NDK_UNAME)-$(NDK_PROCESSOR)
-//NDK_TOOLCHAIN_BASE=/tmp/my-android-toolchain
 NDK_TOOLCHAIN_BASE=$(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/$(NDK_UNAME)-$(NDK_PROCESSOR)
+NDK_SYSROOT=$(NDK_TOOLCHAIN_BASE)/sysroot
 
-# include Android's build flags
 TARGET_ARCH_ABI = $(APP_ABI)
-#include $(ANDROID_NDK_HOME)/toolchains/$(NDK_TOOLCHAIN)/setup.mk
 
 CC := $(NDK_TOOLCHAIN_BASE)/bin/$(HOST)$(NDK_PLATFORM_LEVEL)-clang
 CXX := $(NDK_TOOLCHAIN_BASE)/bin/$(HOST)$(NDK_PLATFORM_LEVEL)-clang++ --sysroot=$(NDK_SYSROOT)
 CPP := $(NDK_TOOLCHAIN_BASE)/bin/$(HOST)$(NDK_PLATFORM_LEVEL)-clang++ --sysroot=$(NDK_SYSROOT)
-LD := $(NDK_TOOLCHAIN_BASE)/bin/ld
+LD := $(NDK_TOOLCHAIN_BASE)/bin/ld.lld
 AR := $(NDK_TOOLCHAIN_BASE)/bin/llvm-ar
 RANLIB := $(NDK_TOOLCHAIN_BASE)/bin/llvm-ranlib
 
@@ -145,37 +129,26 @@ ifneq ($(filter mips%, $(NDK_ABI)),)
   OPENSSL_CONF_FLAG+=-D_MIPS_SZLONG=32 -D__MIPSEL__
  endif
 endif
-libs/lib/libcrypto.a:
+libs/openssl-build-stamp: libs/openssl/Configure
 	cd libs/openssl && \
-		./Configure linux-generic$(NDK_BIT) -U__ANDROID_API__ -D__ANDROID_API__=$(NDK_PLATFORM_LEVEL) -DL_ENDIAN $(OPENSSL_CONF_FLAG) && \
-		make -j`nproc` CC="$(CC)" ANDROID_DEV=$(NDK_SYSROOT)/usr depend && \
-		make -j`nproc` CC="$(CC)" ANDROID_DEV=$(NDK_SYSROOT)/usr build_libs
-
-libs/lib/libssl.a:
-	cp config.sub libs/openssl
-	cp config.guess libs/openssl
-	cd libs/openssl && \
-		./Configure linux-generic$(NDK_BIT) -U__ANDROID_API__ -D__ANDROID_API__=$(NDK_PLATFORM_LEVEL) -DL_ENDIAN $(OPENSSL_CONF_FLAG) -DNO_RECVMMSG && \
-		make -j`nproc` CC="$(CC)" ANDROID_DEV=$(NDK_SYSROOT)/usr depend && \
-		make -j`nproc` CC="$(CC)" ANDROID_DEV=$(NDK_SYSROOT)/usr build_libs
-
-libs/openssl-build-stamp: libs/lib/libcrypto.a libs/lib/libssl.a
+		export ANDROID_NDK_ROOT="$(ANDROID_NDK_HOME)" PATH="$(NDK_TOOLCHAIN_BASE)/bin:$$PATH" && \
+		./Configure android-$(NDK_ABI) -D__ANDROID_API__=$(NDK_PLATFORM_LEVEL) no-shared $(OPENSSL_CONF_FLAG) -DNO_RECVMMSG && \
+		$(MAKE) -j`nproc` build_libs
 	touch libs/openssl-build-stamp
 
 openssl: libs/openssl-build-stamp
 
-	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/$(TARGET_I2P_ABI)/lib || \
-		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/$(TARGET_I2P_ABI)/lib
-	cp libs/openssl/libcrypto.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
-	cp libs/openssl/libssl.a libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/$(TARGET_I2P_ABI)/lib/libssl.a
-	test -d libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/include/openssl || \
-		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/include/openssl
-	cp libs/openssl/include/openssl/* libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/include/openssl
+	test -d libs/OpenSSL-for-Android-Prebuilt/openssl/$(TARGET_I2P_ABI)/lib || \
+		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl/$(TARGET_I2P_ABI)/lib
+	cp libs/openssl/libcrypto.a libs/OpenSSL-for-Android-Prebuilt/openssl/$(TARGET_I2P_ABI)/lib/libcrypto.a
+	cp libs/openssl/libssl.a libs/OpenSSL-for-Android-Prebuilt/openssl/$(TARGET_I2P_ABI)/lib/libssl.a
+	test -d libs/OpenSSL-for-Android-Prebuilt/openssl/include/openssl || \
+		mkdir -p libs/OpenSSL-for-Android-Prebuilt/openssl/include/openssl
+	cp libs/openssl/include/openssl/* libs/OpenSSL-for-Android-Prebuilt/openssl/include/openssl
 
 openssl-clean:
 	-rm libs/openssl-build-stamp
-	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/$(TARGET_I2P_ABI)/lib/libcrypto.a
-	-rm libs/OpenSSL-for-Android-Prebuilt/openssl-1.1.1s-clang/$(TARGET_I2P_ABI)/lib/libssl.a
+	-rm -rf libs/OpenSSL-for-Android-Prebuilt/openssl
 	-cd libs/openssl && \
 		git clean -fdx
 
@@ -183,27 +156,27 @@ openssl-clean:
 # boost
 
 boost: boost-build-stamp
-	-cd libs/Boost-for-Android && \
-	CXXFLAGS="-std=c++17" NCPU=`nproc` ./build-android.sh --boost=1.78.0 \
-		--arch=$(APP_ABI) --target-version=$(NDK_PLATFORM_LEVEL) "$(ANDROID_NDK_HOME)" > /dev/null
-	test -d libs/Boost-for-Android-Prebuilt/boost-1_78_0/include/boost || \
-		mkdir -p libs/Boost-for-Android-Prebuilt/boost-1_78_0/include/boost
-	test -d libs/Boost-for-Android-Prebuilt/boost-1_78_0/$(APP_ABI)/lib || \
-		mkdir -p libs/Boost-for-Android-Prebuilt/boost-1_78_0/$(APP_ABI)/lib
-
-	cp -r libs/Boost-for-Android/build/out/$(APP_ABI)/include/boost-1_78/boost/* libs/Boost-for-Android-Prebuilt/boost-1_78_0/include/boost
-	cp -r libs/Boost-for-Android/build/out/$(APP_ABI)/lib/*.a libs/Boost-for-Android-Prebuilt/boost-1_78_0/$(APP_ABI)/lib
-
-	cd libs/Boost-for-Android-Prebuilt/boost-1_78_0/$(APP_ABI)/lib && \
-		rename 's/$(REMOVE_BOOST_LIBS_SUFFIX)//' *.a
-
-	cp boost/Android.mk libs/Boost-for-Android-Prebuilt/boost-1_78_0
+	@cd libs/Boost-for-Android && \
+	CXXFLAGS="-std=c++20" NCPU=`nproc` ./build-android.sh --boost=1.84.0 \
+		--with-libraries=program_options --layout=system \
+		--arch=$(APP_ABI) --target-version=$(NDK_PLATFORM_LEVEL) "$(ANDROID_NDK_HOME)" \
+		> "$(EXTERNAL_ROOT)/libs/boost-build.log" 2>&1 || \
+		{ echo "Boost build failed; last 100 log lines:"; tail -n 100 "$(EXTERNAL_ROOT)/libs/boost-build.log"; exit 1; }
+	@test -s libs/Boost-for-Android/build/out/$(APP_ABI)/lib/libboost_program_options.a && \
+		test -f libs/Boost-for-Android/build/out/$(APP_ABI)/include/boost/version.hpp || \
+		{ echo "Boost output missing; last 100 log lines:"; tail -n 100 libs/boost-build.log; exit 1; }
+	@echo "Boost 1.84.0 built for $(APP_ABI); details: libs/boost-build.log"
+	mkdir -p libs/Boost-for-Android-Prebuilt/boost/include/boost
+	mkdir -p libs/Boost-for-Android-Prebuilt/boost/$(APP_ABI)/lib
+	cp -r libs/Boost-for-Android/build/out/$(APP_ABI)/include/boost/* libs/Boost-for-Android-Prebuilt/boost/include/boost
+	cp libs/Boost-for-Android/build/out/$(APP_ABI)/lib/libboost_program_options.a libs/Boost-for-Android-Prebuilt/boost/$(APP_ABI)/lib
 
 boost-build-stamp: libs/Boost-for-Android/build-android.sh
 	touch libs/boost-build-stamp
 
 boost-clean:
 	-rm -f libs/boost-build-stamp
+	-rm -f libs/boost-build.log
 	-rm -rf libs/Boost-for-Android-Prebuilt
 	-cd libs/Boost-for-Android && \
 		git clean -fdx
@@ -212,20 +185,20 @@ boost-clean:
 
 miniupnpc: miniupnpc-build-stamp
 	make  -j`nproc` -C libs/miniupnp/miniupnpc CC="$(CC)" CXX="$(CXX)" AR="$(AR)" RANLIB="$(RANLIB)" CFLAGS="$(CFLAGS)"  LDFLAGS="$(LDFLAGS)" PREFIX="$(EXTERNAL_ROOT)"
-	test -d libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/$(TARGET_I2P_ABI)/lib || \
-		mkdir -p libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/$(TARGET_I2P_ABI)/lib
-	cp libs/miniupnp/miniupnpc/build/libminiupnpc.a libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/$(TARGET_I2P_ABI)/lib/libminiupnpc.a
-	test -d libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/include/miniupnpc || \
-		mkdir -p libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/include/miniupnpc
-	cp libs/miniupnp/miniupnpc/include/*.h libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/include/miniupnpc
-	cp miniupnpc/Android.mk libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/Android.mk
+	test -d libs/MiniUPnP-for-Android-Prebuilt/miniupnpc/$(TARGET_I2P_ABI)/lib || \
+		mkdir -p libs/MiniUPnP-for-Android-Prebuilt/miniupnpc/$(TARGET_I2P_ABI)/lib
+	cp libs/miniupnp/miniupnpc/build/libminiupnpc.a libs/MiniUPnP-for-Android-Prebuilt/miniupnpc/$(TARGET_I2P_ABI)/lib/libminiupnpc.a
+	test -d libs/MiniUPnP-for-Android-Prebuilt/miniupnpc/include/miniupnpc || \
+		mkdir -p libs/MiniUPnP-for-Android-Prebuilt/miniupnpc/include/miniupnpc
+	cp libs/miniupnp/miniupnpc/include/*.h libs/MiniUPnP-for-Android-Prebuilt/miniupnpc/include/miniupnpc
+	cp miniupnpc/Android.mk libs/MiniUPnP-for-Android-Prebuilt/miniupnpc/Android.mk
 
 miniupnpc-build-stamp: libs/miniupnp/miniupnpc/Makefile
 	touch libs/miniupnpc-build-stamp
 
 miniupnpc-clean:
 	-rm -f libs/miniupnpc-build-stamp
-	-rm libs/MiniUPnP-for-Android-Prebuilt/miniupnpc-2.1/$(TARGET_I2P_ABI)/lib/libminiupnpc.a
+	-rm -rf libs/MiniUPnP-for-Android-Prebuilt/miniupnpc
 	-cd libs/miniupnp && \
 		git clean -fdx
 #------------------------------------------------------------------------------#
@@ -263,14 +236,12 @@ assets-clean:
 # cleanup, cleanup, put the toys away
 
 ##clean: openssl-clean i2pd-clean assets-clean
-clean: boost-clean openssl-clean i2pd-clean assets-clean
+clean: boost-clean openssl-clean miniupnpc-clean i2pd-clean assets-clean
 
 #------------------------------------------------------------------------------#
 # debugging stuff
 
 showsetup:
-	@echo "NDK_TOOLCHAIN_VERSION: $(NDK_TOOLCHAIN_VERSION)"
-	@echo "NDK_TOOLCHAIN: $(NDK_TOOLCHAIN)"
 	@echo "NDK_PLATFORM_LEVEL: $(NDK_PLATFORM_LEVEL)"
 	@echo "NDK_SYSROOT: $(NDK_SYSROOT)"
 	@echo "APP_ABI: $(APP_ABI)"
